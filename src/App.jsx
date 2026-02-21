@@ -14,11 +14,11 @@ import ScheduleScreen from './components/ScheduleScreen'
 import { PlayerDetailModal } from './components/PlayerDetailModal'
 
 const PRIMARY_TABS = ['home', 'analysis', 'reviews']
-const OVERLAY_SCREENS = ['settings', 'profile', 'compare', 'session', 'leaderboard', 'schedule']
+const OVERLAY_SCREENS = ['settings', 'compare', 'session']
 
 export default function App() {
   const [tab, setTab] = useState('home')
-  const [overlay, setOverlay] = useState(null) // settings | profile | compare | session | leaderboard | schedule | null
+  const [overlay, setOverlay] = useState(null) // settings | compare | session | null
   const [showNotifs, setShowNotifs] = useState(false)
   const [showSearch, setShowSearch] = useState(false)
   const [selectedPlayer, setSelectedPlayer] = useState(null)
@@ -53,10 +53,10 @@ export default function App() {
   // expose navigation helpers for child screens
   const nav = useMemo(() => ({
     goToSettings: () => setOverlay('settings'),
-    goToProfile: () => setOverlay('profile'),
+    goToProfile: () => setTab('profile'),
     goToCompare: () => setOverlay('compare'),
-    goToLeaderboard: () => setOverlay('leaderboard'),
-    goToSchedule: () => setOverlay('schedule'),
+    goToLeaderboard: () => setTab('leaderboard'),
+    goToSchedule: () => setTab('schedule'),
     openSession: (id) => { setSessionId(id); setOverlay('session') },
     openSearch: () => setShowSearch(true),
     openNotifs: () => setShowNotifs(true),
@@ -88,16 +88,13 @@ export default function App() {
         <div className="pointer-events-none absolute -top-40 left-1/2 -translate-x-1/2 w-[500px] h-[400px] rounded-full bg-orange/[0.04] blur-[120px]" />
         <AnimatePresence mode="wait">
           {overlay === 'settings' && <SettingsScreen key="settings" onBack={closeOverlay} />}
-          {overlay === 'profile' && <ProfileScreen key="profile" onBack={closeOverlay} />}
           {overlay === 'compare' && <PlayerComparison key="compare" />}
-          {overlay === 'leaderboard' && <LeaderboardScreen key="lb" />}
-          {overlay === 'schedule' && <ScheduleScreen key="sched" />}
           {overlay === 'session' && (
             <SessionDetailScreen key="session" sessionId={sessionId} onBack={closeOverlay} />
           )}
         </AnimatePresence>
         {/* back floating button for overlays without built-in back */}
-        {['compare', 'leaderboard', 'schedule'].includes(overlay) && (
+        {['compare'].includes(overlay) && (
           <button
             onClick={closeOverlay}
             className="fixed top-4 left-4 z-50 w-9 h-9 rounded-full bg-dark-800/80 backdrop-blur border border-dark-700 flex items-center justify-center"
@@ -125,8 +122,10 @@ export default function App() {
           transition={{ duration: 0.2, ease: 'easeOut' }}
         >
           {tab === 'home' && <HomeScreen role={userRole} />}
-          {tab === 'analysis' && <AnalysisScreen />}
-          {tab === 'reviews' && <ReviewsScreen />}
+          {tab === 'schedule' && <ScheduleScreen />}
+          {tab === 'leaderboard' && <LeaderboardScreen />}
+          {tab === 'chat' && <ReviewsScreen />}
+          {tab === 'profile' && <ProfileScreen />}
         </motion.div>
       </AnimatePresence>
 

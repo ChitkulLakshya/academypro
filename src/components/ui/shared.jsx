@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { scoreColor } from '../utils/helpers'
+import { scoreColor } from '../../utils/helpers'
 
 /**
  * Animated circular progress ring.

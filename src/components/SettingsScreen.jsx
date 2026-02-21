@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { ANIM } from '../utils/constants'
 import { ACADEMY_INFO, CURRENT_USER } from '../data/mockData'
-import { GearIcon, BellIcon, UserIcon } from './BottomNav'
+import { Settings, Bell, User } from 'lucide-react'
 
 const SECTIONS = [
   {
