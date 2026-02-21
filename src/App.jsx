@@ -109,37 +109,38 @@ export default function App() {
   }
 
   return (
-    <>
-      <div className="relative min-h-dvh bg-dark-900 pb-24 overflow-x-hidden">
-        {/* subtle top glow — warm orange ambient light */}
-        <div className="pointer-events-none absolute -top-40 left-1/2 -translate-x-1/2 w-[500px] h-[400px] rounded-full bg-orange/[0.04] blur-[120px]" />
+    <div className="relative min-h-dvh bg-dark-900">
+      {/* subtle top glow — warm orange ambient light */}
+      <div className="pointer-events-none absolute -top-40 left-1/2 -translate-x-1/2 w-[500px] h-[400px] rounded-full bg-orange/[0.04] blur-[120px]" />
 
-        <AnimatePresence mode="wait" initial={false}>
-          <motion.div
-            key={tab}
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -6 }}
-            transition={{ duration: 0.2, ease: 'easeOut' }}
-          >
-            {tab === 'home' && <HomeScreen role={userRole} />}
-            {tab === 'schedule' && <ScheduleScreen onBack={() => setTab('home')} />}
-            {tab === 'leaderboard' && <LeaderboardScreen onBack={() => setTab('home')} />}
-            {tab === 'chat' && <ReviewsScreen onBack={() => setTab('home')} />}
-            {tab === 'profile' && <ProfileScreen onBack={() => setTab('home')} />}
-          </motion.div>
-        </AnimatePresence>
+      <AnimatePresence mode="wait" initial={false}>
+        <motion.div
+          key={tab}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.15 }}
+        >
+          {tab === 'home' && <HomeScreen role={userRole} />}
+          {tab === 'schedule' && <ScheduleScreen onBack={() => setTab('home')} />}
+          {tab === 'leaderboard' && <LeaderboardScreen onBack={() => setTab('home')} />}
+          {tab === 'chat' && <ReviewsScreen onBack={() => setTab('home')} />}
+          {tab === 'profile' && <ProfileScreen onBack={() => setTab('home')} />}
+        </motion.div>
+      </AnimatePresence>
 
-        {/* modals / overlays */}
-        <AnimatePresence>
-          {showNotifs && <NotificationPanel notifications={notifications} onClose={closeNotifs} />}
-          {showSearch && <SearchOverlay onClose={closeSearch} />}
-          {selectedPlayer && <PlayerDetailModal player={selectedPlayer} onClose={closePlayerModal} />}
-        </AnimatePresence>
+      {/* modals / overlays */}
+      <AnimatePresence>
+        {showNotifs && <NotificationPanel notifications={notifications} onClose={closeNotifs} />}
+        {showSearch && <SearchOverlay onClose={closeSearch} />}
+        {selectedPlayer && <PlayerDetailModal player={selectedPlayer} onClose={closePlayerModal} />}
+      </AnimatePresence>
+
+      {/* Bottom Navigation — rendered with inline style to guarantee visibility */}
+      <div style={{ position: 'fixed', bottom: '24px', left: '50%', transform: 'translateX(-50%)', zIndex: 9999, width: '92%', maxWidth: '448px' }}>
+        <BottomNav active={tab} onChange={setTab} />
       </div>
-
-      <BottomNav active={tab} onChange={setTab} />
-    </>
+    </div>
   )
 }
 
