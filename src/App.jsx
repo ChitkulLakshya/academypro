@@ -122,10 +122,10 @@ export default function App() {
           transition={{ duration: 0.2, ease: 'easeOut' }}
         >
           {tab === 'home' && <HomeScreen role={userRole} />}
-          {tab === 'schedule' && <ScheduleScreen />}
-          {tab === 'leaderboard' && <LeaderboardScreen />}
-          {tab === 'chat' && <ReviewsScreen />}
-          {tab === 'profile' && <ProfileScreen />}
+          {tab === 'schedule' && <ScheduleScreen onBack={() => setTab('home')} />}
+          {tab === 'leaderboard' && <LeaderboardScreen onBack={() => setTab('home')} />}
+          {tab === 'chat' && <ReviewsScreen onBack={() => setTab('home')} />}
+          {tab === 'profile' && <ProfileScreen onBack={() => setTab('home')} />}
         </motion.div>
       </AnimatePresence>
 

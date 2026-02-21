@@ -14,7 +14,7 @@ const SORT_OPTIONS = [
   { key: 'passing', label: 'Passing' },
 ]
 
-export default function LeaderboardScreen() {
+export default function LeaderboardScreen({ onBack }) {
   const [timeFilter, setTimeFilter] = useState('30 Days')
   const [sortKey, setSortKey] = useState('overall')
 
@@ -46,7 +46,14 @@ export default function LeaderboardScreen() {
       initial="hidden"
       animate="show"
     >
-      <motion.div variants={ANIM.fadeUp} className="mb-4">
+      <motion.div variants={ANIM.fadeUp} className="flex items-center gap-3 mb-4">
+        {onBack && (
+          <button onClick={onBack} className="w-9 h-9 rounded-full bg-dark-800 border border-dark-700 flex items-center justify-center">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9a9a9e" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <polyline points="15 18 9 12 15 6" />
+            </svg>
+          </button>
+        )}
         <h1 className="text-xl font-bold">Leaderboard</h1>
         <p className="text-xs text-dark-400 mt-0.5">Top performers across the academy</p>
       </motion.div>

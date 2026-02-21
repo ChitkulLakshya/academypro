@@ -31,7 +31,7 @@ function getEventsForDate(day) {
   return allSessions.filter((_, i) => (day + i) % 7 === 0).slice(0, 2)
 }
 
-export default function ScheduleScreen() {
+export default function ScheduleScreen({ onBack }) {
   const [viewMode, setViewMode] = useState('calendar') // calendar | list
   const [selectedDate, setSelectedDate] = useState(new Date().getDate())
   const { dates, year, month } = useMemo(buildCalendarDates, [])
@@ -45,22 +45,31 @@ export default function ScheduleScreen() {
       animate="show"
     >
       {/* header */}
-      <motion.div variants={ANIM.fadeUp} className="flex items-center justify-between mb-4">
-        <div>
-          <h1 className="text-xl font-bold">Schedule</h1>
-          <p className="text-xs text-dark-400 mt-0.5">{MONTHS[month]} {year}</p>
-        </div>
-        <div className="flex gap-1 bg-dark-800 rounded-lg p-0.5">
-          {['calendar', 'list'].map(m => (
-            <button
-              key={m}
-              onClick={() => setViewMode(m)}
-              className={`px-3 py-1.5 text-[10px] font-semibold rounded-md capitalize transition-all
-                ${viewMode === m ? 'bg-orange text-dark-950' : 'text-dark-400'}`}
-            >
-              {m}
-            </button>
-          ))}
+      <motion.div variants={ANIM.fadeUp} className="flex items-center gap-3 mb-4">
+        {onBack && (
+          <button onClick={onBack} className="w-9 h-9 rounded-full bg-dark-800 border border-dark-700 flex items-center justify-center">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9a9a9e" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <polyline points="15 18 9 12 15 6" />
+            </svg>
+          </button>
+        )}
+        <div className="flex-1 flex items-center justify-between">
+          <div>
+            <h1 className="text-xl font-bold">Schedule</h1>
+            <p className="text-xs text-dark-400 mt-0.5">{MONTHS[month]} {year}</p>
+          </div>
+          <div className="flex gap-1 bg-dark-800 rounded-lg p-0.5">
+            {['calendar', 'list'].map(m => (
+              <button
+                key={m}
+                onClick={() => setViewMode(m)}
+                className={`px-3 py-1.5 text-[10px] font-semibold rounded-md capitalize transition-all
+                  ${viewMode === m ? 'bg-orange text-dark-950' : 'text-dark-400'}`}
+              >
+                {m}
+              </button>
+            ))}
+          </div>
         </div>
       </motion.div>
 

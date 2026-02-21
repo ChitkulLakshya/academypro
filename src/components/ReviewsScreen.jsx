@@ -11,7 +11,7 @@ import { playerReviews } from '../data/sessionData'
 
 const REVIEW_TABS = ['Overview', 'Batting', 'Bowling', 'Fielding', 'Fitness']
 
-export default function ReviewsScreen() {
+export default function ReviewsScreen({ onBack }) {
   const [selectedPlayerId, setSelectedPlayerId] = useState(players[0]?.id || 'p001')
   const [activeTab, setActiveTab] = useState('Overview')
   const [timeFilter, setTimeFilter] = useState('30 Days')
@@ -47,7 +47,7 @@ export default function ReviewsScreen() {
       initial="hidden"
       animate="show"
     >
-      <PageHeader />
+      <PageHeader onBack={onBack} />
       <TimeFilterStrip active={timeFilter} onChange={setTimeFilter} />
       <PlayerSelector
         players={visiblePlayers}
@@ -111,14 +111,23 @@ export default function ReviewsScreen() {
   )
 }
 
-function PageHeader() {
+function PageHeader({ onBack }) {
   const today = new Date()
   const formatted = today.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
 
   return (
-    <motion.div variants={ANIM.fadeUp} className="mb-4">
-      <h1 className="text-xl font-bold tracking-tight">Reviews</h1>
-      <p className="text-xs text-dark-400 mt-0.5">Session · {formatted}</p>
+    <motion.div variants={ANIM.fadeUp} className="flex items-center gap-3 mb-4">
+      {onBack && (
+        <button onClick={onBack} className="w-9 h-9 rounded-full bg-dark-800 border border-dark-700 flex items-center justify-center">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9a9a9e" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <polyline points="15 18 9 12 15 6" />
+          </svg>
+        </button>
+      )}
+      <div>
+        <h1 className="text-xl font-bold tracking-tight">Reviews</h1>
+        <p className="text-xs text-dark-400 mt-0.5">Session · {formatted}</p>
+      </div>
     </motion.div>
   )
 }
