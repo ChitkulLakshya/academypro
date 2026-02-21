@@ -1,0 +1,61 @@
+@import "tailwindcss";
+
+@theme {
+  --color-slate-950: #0a0e1a;
+  --color-slate-900: #0f1629;
+  --color-slate-850: #141b33;
+  --color-slate-800: #1a2240;
+  --color-slate-700: #243054;
+  --color-slate-600: #374973;
+  --color-slate-500: #4f6490;
+  --color-slate-400: #7b8eb5;
+  --color-slate-300: #a8b8d8;
+
+  --color-brand: #6c5ce7;
+  --color-brand-light: #a29bfe;
+  --color-brand-dark: #5041c9;
+  --color-accent: #00cec9;
+  --color-accent-warm: #fdcb6e;
+  --color-success: #00b894;
+  --color-danger: #ff6b6b;
+  --color-warn: #ffc048;
+
+  --font-sans: "Inter", system-ui, -apple-system, sans-serif;
+}
+
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+html {
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+  background: var(--color-slate-950);
+  color: #e2e8f0;
+  overflow-x: hidden;
+}
+
+#root {
+  max-width: 430px;
+  margin: 0 auto;
+  min-height: 100dvh;
+  position: relative;
+  background: var(--color-slate-950);
+}
+
+.hide-scrollbar::-webkit-scrollbar { display: none; }
+.hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* recharts defaults are ugly */
+.recharts-polar-angle-axis-tick-value {
+  font-size: 11px !important;
+  fill: #a8b8d8 !important;
+}
+.recharts-polar-grid-concentric-polygon {
+  stroke: #243054 !important;
+}
