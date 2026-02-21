@@ -3,7 +3,7 @@ import { Bell, Zap, Award, TrendingUp, Star } from 'lucide-react'
 
 export default function HomeScreen() {
   return (
-    <div className="min-h-dvh bg-dark-900 text-white pb-24 px-6 pt-12 font-sans">
+    <div className="bg-dark-900 text-white pb-32 px-6 pt-12 font-sans">
       {/* Header */}
       <div className="flex items-center justify-between mb-8">
         <div className="flex items-center gap-3">
