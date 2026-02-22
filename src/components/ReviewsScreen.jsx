@@ -11,6 +11,52 @@ import { playerReviews } from '../data/sessionData'
 
 const REVIEW_TABS = ['Overview', 'Batting', 'Bowling', 'Fielding', 'Fitness']
 
+function gradeFromScore(score) {
+  if (score >= 85) return 'Excellent'
+  if (score >= 70) return 'Very Good'
+  if (score >= 55) return 'Good'
+  if (score >= 40) return 'Average'
+  return 'Needs Work'
+}
+
+function buildReview(player, filterKey) {
+  const stats = player.stats?.[filterKey] || {}
+  const s = (key, multiplier = 10) => Math.round((stats[key] || 0) * multiplier)
+
+  const battingAvg = Math.round(((stats.footwork || 0) + (stats.timing || 0) + (stats.shotSelection || 0) + (stats.balance || 0) + (stats.impact || 0)) / 5 * 10)
+  const bowlingAvg = Math.round(((stats.stamina || 0) + (stats.passing || 0) + (stats.balance || 0) * 10 + (stats.footwork || 0) * 10) / 4)
+  const fieldingAvg = Math.round(((stats.speed || 0) + (stats.passing || 0) + (stats.balance || 0) * 10 + (stats.impact || 0) * 10) / 4)
+  const fitnessAvg = Math.round(((stats.speed || 0) + (stats.stamina || 0) + (stats.shooting || 0)) / 3)
+
+  return {
+    batting: {
+      overall: battingAvg,
+      grade: gradeFromScore(battingAvg),
+      skills: { Footwork: s('footwork'), Timing: s('timing'), 'Shot Selection': s('shotSelection'), Balance: s('balance'), Impact: s('impact') },
+      comment: null,
+    },
+    bowling: {
+      overall: bowlingAvg,
+      grade: gradeFromScore(bowlingAvg),
+      skills: { Accuracy: stats.passing || 0, Pace: stats.speed || 0, Stamina: stats.stamina || 0, Control: s('balance'), Variation: s('footwork') },
+      comment: null,
+    },
+    fielding: {
+      overall: fieldingAvg,
+      grade: gradeFromScore(fieldingAvg),
+      skills: { Catching: s('impact'), Throwing: stats.speed || 0, 'Ground Fielding': stats.passing || 0, Agility: s('balance'), Anticipation: s('timing') },
+      comment: null,
+    },
+    fitness: {
+      overall: fitnessAvg,
+      grade: gradeFromScore(fitnessAvg),
+      skills: { Speed: stats.speed || 0, Endurance: stats.stamina || 0, Strength: stats.shooting || 0, Flexibility: s('balance'), Recovery: s('footwork') },
+      comment: null,
+    },
+    coachNote: null,
+  }
+}
+
 export default function ReviewsScreen({ onBack }) {
   const [selectedPlayerId, setSelectedPlayerId] = useState(players[0]?.id || 'p001')
   const [activeTab, setActiveTab] = useState('Overview')
@@ -21,8 +67,16 @@ export default function ReviewsScreen({ onBack }) {
 
   const filterKey = filterToKey(timeFilter)
   const selectedPlayer = players.find(p => p.id === selectedPlayerId) || players[0]
-  const review = playerReviews[selectedPlayerId] || null
   const visiblePlayers = showAllPlayers ? players : players.slice(0, 12)
+
+  // Merge hardcoded reviews with dynamically generated ones
+  const review = useMemo(() => {
+    const hardcoded = playerReviews[selectedPlayerId]
+    const generated = buildReview(selectedPlayer, filterKey)
+    if (!hardcoded) return generated
+    // overlay hardcoded coachNote onto generated structure
+    return { ...generated, coachNote: hardcoded.coachNote || generated.coachNote }
+  }, [selectedPlayerId, filterKey, selectedPlayer])
 
   const radarData = useMemo(() => {
     const stats = selectedPlayer.stats?.[filterKey] || {}
@@ -69,9 +123,10 @@ export default function ReviewsScreen({ onBack }) {
       <AnimatePresence mode="wait">
         <motion.div
           key={selectedPlayerId}
-          initial={{ opacity: 0, scale: 0.97 }}
-          animate={{ opacity: 1, scale: 1 }}
-          exit={{ opacity: 0, scale: 0.97 }}
+          variants={ANIM.stagger}
+          initial="hidden"
+          animate="show"
+          exit="hidden"
           transition={{ duration: 0.25 }}
         >
           <PlayerHeader player={selectedPlayer} overallAvg={overallAvg} />
@@ -85,18 +140,12 @@ export default function ReviewsScreen({ onBack }) {
             </>
           )}
 
-          {activeTab !== 'Overview' && review && (
+          {activeTab !== 'Overview' && (
             <CategoryReview
               category={activeTab.toLowerCase()}
               review={review}
               player={selectedPlayer}
             />
-          )}
-
-          {!review && activeTab !== 'Overview' && (
-            <motion.div variants={ANIM.fadeUp} className="card p-5 mb-4 text-center">
-              <p className="text-dark-400 text-sm">No review data for this tab yet</p>
-            </motion.div>
           )}
 
           <CoachNotes
