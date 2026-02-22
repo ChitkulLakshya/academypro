@@ -83,6 +83,8 @@ export const springs = {
   gentle: { type: 'spring', stiffness: 200, damping: 20 },
   bouncy: { type: 'spring', stiffness: 400, damping: 10, mass: 0.8 },
   smooth: { type: 'spring', stiffness: 120, damping: 14 },
+  elastic: { type: 'spring', stiffness: 300, damping: 8, mass: 0.6 },
+  stiff: { type: 'spring', stiffness: 600, damping: 35, mass: 1 },
 }
 
 // skeleton pulse for loading states
