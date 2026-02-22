@@ -35,13 +35,23 @@ export default function LoadingScreen({ message = 'Loading...', progress = null 
 
       {/* brand name */}
       <motion.h1
-        className="text-xl font-bold text-white tracking-wider mb-2"
+        className="text-xl font-bold text-white tracking-wider mb-1"
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.2 }}
       >
         ACADEMY<span className="text-orange">PRO</span>
       </motion.h1>
+
+      {/* tagline */}
+      <motion.p
+        className="text-[10px] text-dark-400 tracking-widest uppercase mb-3"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.3 }}
+      >
+        Train Hard, Play Smart
+      </motion.p>
 
       {/* message */}
       <motion.p
