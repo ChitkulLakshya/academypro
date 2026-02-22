@@ -69,14 +69,10 @@ export default function ReviewsScreen({ onBack }) {
   const selectedPlayer = players.find(p => p.id === selectedPlayerId) || players[0]
   const visiblePlayers = showAllPlayers ? players : players.slice(0, 12)
 
-  // Merge hardcoded reviews with dynamically generated ones
+  // Use review data from sessionData — all 50 players have unique entries
   const review = useMemo(() => {
-    const hardcoded = playerReviews[selectedPlayerId]
-    const generated = buildReview(selectedPlayer, filterKey)
-    if (!hardcoded) return generated
-    // overlay hardcoded coachNote onto generated structure
-    return { ...generated, coachNote: hardcoded.coachNote || generated.coachNote }
-  }, [selectedPlayerId, filterKey, selectedPlayer])
+    return playerReviews[selectedPlayerId] || null
+  }, [selectedPlayerId])
 
   const radarData = useMemo(() => {
     const stats = selectedPlayer.stats?.[filterKey] || {}
