@@ -154,11 +154,14 @@ export function resetOnboarding() {
 // app-level config — might move to context if it grows
 export const APP_CONFIG = {
   appName: 'AcademyPro',
-  version: '1.0.0',
+  version: '1.1.0',
+  buildDate: '2026-02-22',
   maxPlayersPerSession: 15,
   defaultTimeFilter: '30 Days',
   enableAnimations: true,
   debugMode: false,
+  apiBaseUrl: null,
+  supportEmail: 'support@lionsacademy.com',
 }
 
 // tab metadata for potential deep linking later
